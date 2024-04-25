@@ -16,6 +16,7 @@ public class UserBalance {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
+    private String userEmailAddress;
     private String currencyType;
     private Double balance;
 

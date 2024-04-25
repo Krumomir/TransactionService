@@ -6,6 +6,7 @@ import lombok.Data;
 public class UserBalanceDTO {
     private Long id;
     private Long userId;
+    private String userEmailAddress;
     private String currencyType;
     private Double balance;
 }

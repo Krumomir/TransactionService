@@ -9,6 +9,7 @@ public class UserBalanceMapper {
     public UserBalanceDTO toDTO(UserBalance balance) {
         UserBalanceDTO dto = new UserBalanceDTO();
         dto.setId(balance.getId());
+        dto.setUserEmailAddress(balance.getUserEmailAddress());
         dto.setUserId(balance.getUserId());
         dto.setCurrencyType(balance.getCurrencyType());
         dto.setBalance(balance.getBalance());
@@ -18,6 +19,7 @@ public class UserBalanceMapper {
     public UserBalance toEntity(UserBalanceDTO dto) {
         UserBalance balance = new UserBalance();
         balance.setId(dto.getId());
+        balance.setUserEmailAddress(dto.getUserEmailAddress());
         balance.setUserId(dto.getUserId());
         balance.setCurrencyType(dto.getCurrencyType());
         balance.setBalance(dto.getBalance());

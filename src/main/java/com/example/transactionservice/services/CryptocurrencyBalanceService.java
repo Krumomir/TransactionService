@@ -22,7 +22,7 @@ public class CryptocurrencyBalanceService {
     public CryptocurrencyBalance buy(BuySellRequestDTO requestDTO) {
         CryptoPrice coin = cryptoPriceRepository.findById(requestDTO.getCoinId()).orElse(null);
         CryptocurrencyBalance cryptoBalance = cryptoBalanceRepository.findByUserIdAndCoinId(requestDTO.getUserId(), coin);
-        UserBalance currencyBalance = currencyBalanceRepository.findById(requestDTO.getUserId()).orElse(null);
+        UserBalance currencyBalance = currencyBalanceRepository.findByUserId(requestDTO.getUserId());
 
         if (currencyBalance == null) {
             return null;
@@ -33,14 +33,11 @@ public class CryptocurrencyBalanceService {
         }
 
         if (cryptoBalance == null) {
-            cryptoBalance = new CryptocurrencyBalance();
-            cryptoBalance.setUserId(requestDTO.getUserId());
-            cryptoBalance.setCoinId(coin);
-            cryptoBalance.setCoinBalance(0.0);
+            cryptoBalance = createCryptoBalance(requestDTO.getUserId(), requestDTO.getCoinId());
         }
 
         Double coinAmount = convertBetweenCurrency(currencyBalance.getCurrencyType(), requestDTO.getAmount());
-        Double currencyAmount = dealPrice(coin, coinAmount, true);
+        Double currencyAmount = dealPrice(coin, coinAmount);
 
         if (currencyBalance.getBalance() >= currencyAmount) {
             cryptoBalance.setCoinBalance(cryptoBalance.getCoinBalance() + coinAmount);
@@ -54,18 +51,17 @@ public class CryptocurrencyBalanceService {
     public CryptocurrencyBalance sell(BuySellRequestDTO requestDTO) {
         CryptoPrice coin = cryptoPriceRepository.findById(requestDTO.getCoinId()).orElse(null);
         CryptocurrencyBalance cryptoBalance = cryptoBalanceRepository.findByUserIdAndCoinId(requestDTO.getUserId(), coin);
-        UserBalance currencyBalance = currencyBalanceRepository.findById(requestDTO.getUserId()).orElse(null);
+        UserBalance currencyBalance = currencyBalanceRepository.findByUserId(requestDTO.getUserId());
 
-        if (cryptoBalance == null || currencyBalance == null) {
-            return null;
+        if (cryptoBalance == null) {
+            cryptoBalance = createCryptoBalance(requestDTO.getUserId(), requestDTO.getCoinId());
         }
 
-        if (coin == null) {
+        if (currencyBalance == null)
             return null;
-        }
 
         Double coinAmount = convertBetweenCurrency(currencyBalance.getCurrencyType(), requestDTO.getAmount());
-        Double currencyAmount = dealPrice(coin, coinAmount, false);
+        Double currencyAmount = dealPrice(coin, coinAmount);
 
         if (cryptoBalance.getCoinBalance() >= coinAmount) {
             cryptoBalance.setCoinBalance(cryptoBalance.getCoinBalance() - coinAmount);
@@ -77,7 +73,7 @@ public class CryptocurrencyBalanceService {
         return null;
     }
 
-    public Double dealPrice(CryptoPrice coin, Double coinAmount, boolean isBuying) {
+    public Double dealPrice(CryptoPrice coin, Double coinAmount) {
         if (coinAmount == null || coinAmount <= 0) {
             return null;
         }
@@ -94,6 +90,14 @@ public class CryptocurrencyBalanceService {
             case "BGN" -> amount * 1.7;
             default -> null;
         };
+    }
+
+    public CryptocurrencyBalance createCryptoBalance(Long userId, Long coinId) {
+        CryptocurrencyBalance cryptoBalance = new CryptocurrencyBalance();
+        cryptoBalance.setUserId(userId);
+        cryptoBalance.setCoinId(cryptoPriceRepository.findById(coinId).orElse(null));
+        cryptoBalance.setCoinBalance(0.0);
+        return cryptoBalanceRepository.save(cryptoBalance);
     }
 
 }

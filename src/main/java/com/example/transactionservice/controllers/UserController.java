@@ -14,7 +14,7 @@ public class UserController {
 
     @PostMapping("/add/balance")
     public Double addBalance(@RequestBody AddBalanceDTO addBalanceDTO) {
-        return userBalanceService.addBalance(addBalanceDTO.getUserId(), addBalanceDTO.getAmount());
+        return userBalanceService.addBalance(addBalanceDTO);
     }
 
     @GetMapping("/balance/{userId}")
