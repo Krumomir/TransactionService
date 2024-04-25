@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: TransactionService
+  cache:
+    type: redis
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/transactionservice
+    username: root
+    password: martinkrum
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    redis:
+      host: localhost
+      port: 6380
+      password: alicepassword
+      username: alice
+  kafka:
+    bootstrap-servers: localhost:9092
+server:
+  port: 8080
