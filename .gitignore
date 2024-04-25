@@ -50,3 +50,7 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
+
+#Redis
+myredis/conf/redis.conf
+myredis/data/dump.rdb
