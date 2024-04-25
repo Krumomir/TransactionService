@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class CryptoController {
+public class CoinBalanceController {
     private final CryptocurrencyBalanceService cryptoService;
 
     @PostMapping("/buy")

@@ -1,7 +1,6 @@
 package com.example.transactionservice.controllers;
 
 import com.example.transactionservice.DTOS.AddBalanceDTO;
-import com.example.transactionservice.DTOS.ConvertBalanceDTO;
 import com.example.transactionservice.services.UserBalanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class UserController {
+public class CurrencyBalanceController {
     private final UserBalanceService userBalanceService;
 
     @PostMapping("/add/balance")

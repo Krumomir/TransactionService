@@ -1,5 +1,6 @@
 package com.example.transactionservice.services;
 
+import com.example.transactionservice.DTOS.CryptoPriceDTO;
 import com.example.transactionservice.entities.CryptoPrice;
 import com.example.transactionservice.repositories.CryptoPriceRepository;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,10 @@ import lombok.RequiredArgsConstructor;
 public class CryptoPriceService {
     private final CryptoPriceRepository priceRepository;
 
-    public CryptoPrice getPrice(Long id) {
-        return priceRepository.findById(id).orElse(null);
-    }
-
-    public CryptoPrice updatePrice(CryptoPrice price) {
-        return priceRepository.save(price);
+    public CryptoPrice createCoin(CryptoPriceDTO cryptoPriceDTO) {
+        CryptoPrice cryptoPrice = new CryptoPrice();
+        cryptoPrice.setPrice(cryptoPriceDTO.getPrice());
+        cryptoPrice.setName(cryptoPriceDTO.getName());
+        return priceRepository.save(cryptoPrice);
     }
 }

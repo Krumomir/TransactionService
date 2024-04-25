@@ -17,7 +17,7 @@ public class CryptocurrencyBalanceService {
     private final CryptocurrencyBalanceRepository cryptoBalanceRepository;
     private final UserBalanceRepository currencyBalanceRepository;
     private final CryptoPriceRepository cryptoPriceRepository;
-    private final KafkaTemplate<String, BuySellRequestDTO> kafkaTemplate;
+    //private final KafkaTemplate<String, BuySellRequestDTO> kafkaTemplate;
 
     public CryptocurrencyBalance buy(BuySellRequestDTO requestDTO) {
         CryptoPrice coin = cryptoPriceRepository.findById(requestDTO.getCoinId()).orElse(null);
@@ -42,7 +42,7 @@ public class CryptocurrencyBalanceService {
         if (currencyBalance.getBalance() >= currencyAmount) {
             cryptoBalance.setCoinBalance(cryptoBalance.getCoinBalance() + coinAmount);
             currencyBalance.setBalance(currencyBalance.getBalance() - currencyAmount);
-            kafkaTemplate.send("buy-topic", requestDTO);
+        //    kafkaTemplate.send("buy-topic", requestDTO);
             return cryptoBalanceRepository.save(cryptoBalance);
         }
         return null;
@@ -66,7 +66,7 @@ public class CryptocurrencyBalanceService {
         if (cryptoBalance.getCoinBalance() >= coinAmount) {
             cryptoBalance.setCoinBalance(cryptoBalance.getCoinBalance() - coinAmount);
             currencyBalance.setBalance(currencyBalance.getBalance() + currencyAmount);
-            kafkaTemplate.send("sell-topic", requestDTO);
+         //   kafkaTemplate.send("sell-topic", requestDTO);
             return cryptoBalanceRepository.save(cryptoBalance);
         }
 
